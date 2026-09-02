@@ -1,60 +1,51 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Recado;
 
-class RecadoController extends Controller
+class User extends Authenticatable
 {
-    // LISTAR recados do usuário logado
-    public function index()
+    use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * Campos que podem ser preenchidos
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    /**
+     * Relacionamento:
+     * Um usuário pode ter vários recados
+     */
+    public function recados()
     {
-        return auth()->user()->recados;
+        return $this->hasMany(Recado::class);
     }
 
-    // CRIAR recado
-    public function store(Request $request)
+    /**
+     * Campos escondidos no JSON
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Casts (opcional, mas recomendado no Laravel)
+     */
+    protected function casts(): array
     {
-        $request->validate([
-            'titulo' => 'required|string|max:100',
-            'texto'  => 'required|string',
-        ]);
-
-        return auth()->user()->recados()->create([
-            'titulo' => $request->titulo,
-            'texto' => $request->texto,
-        ]);
-    }
-
-    // ATUALIZAR recado
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'titulo' => 'sometimes|string|max:100',
-        'texto'  => 'sometimes|string',
-    ]);
-
-    $recado = Recado::where('id', $id)
-        ->where('user_id', auth()->id())
-        ->firstOrFail();
-
-    $recado->update($request->only('titulo', 'texto'));
-
-    return response()->json($recado);
-}
-
-    // DELETAR recado
-    public function destroy($id)
-    {
-        $recado = Recado::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
-
-        $recado->delete();
-
-        return response()->json([
-            'message' => 'Recado deletado com sucesso'
-        ], 204);
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }
