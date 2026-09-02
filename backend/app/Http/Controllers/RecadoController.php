@@ -43,7 +43,12 @@ public function update(Request $request, $id)
 
     return response()->json($recado);
 }
-
+    public function show($id){
+        return Recado::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
+    }
+    
     // DELETAR recado
     public function destroy($id)
     {
