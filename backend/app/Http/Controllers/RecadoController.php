@@ -60,6 +60,6 @@ public function update(Request $request, $id)
 
         return response()->json([
             'message' => 'Recado deletado com sucesso'
-        ], 204);
+        ], 200);
     }
 }
