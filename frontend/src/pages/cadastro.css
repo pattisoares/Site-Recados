@@ -1,0 +1,96 @@
+.cadastro {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 32px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.cadastro h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  font-size: 1.6rem;
+}
+
+.cadastro form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cadastro div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cadastro label {
+  font-size: 0.9rem;
+  color: #444;
+  font-weight: 500;
+}
+
+.cadastro input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cadastro input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.cadastro .erro {
+  color: #dc2626;
+  background-color: #fee2e2;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.cadastro button[type="submit"] {
+  margin-top: 8px;
+  padding: 12px;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cadastro button[type="submit"]:hover:not(:disabled) {
+  background-color: #4338ca;
+}
+
+.cadastro button[type="submit"]:disabled {
+  background-color: #a5a5f0;
+  cursor: not-allowed;
+}
+
+.cadastro p {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.cadastro p button {
+  background: none;
+  border: none;
+  color: #4f46e5;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+}

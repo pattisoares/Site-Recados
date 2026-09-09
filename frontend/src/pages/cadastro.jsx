@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '../services/api';
+import './cadastro.css';
 
 function Cadastro({ onCadastroSucesso }) {
   const [name, setName] = useState('');
