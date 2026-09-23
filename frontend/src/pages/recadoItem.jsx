@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import ExcluirRecado from './excluirRecado.js';
-import EditarRecado from './editarRecado.js';
+import ExcluirRecado from './excluirRecado.jsx';
+import EditarRecado from './editarRecado.jsx';
 
 function RecadoItem({ recado, onExcluir, onEditar }) {
   const [editando, setEditando] = useState(false);

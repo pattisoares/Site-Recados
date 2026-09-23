@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import api from '../services/api.js';
+import api from '../services/api.jsx';
 
 function ExcluirRecado({ id, onExcluir }) {
   const [excluindo, setExcluindo] = useState(false);

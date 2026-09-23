@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import api from '../services/api.js';
+import api from '../services/api.jsx';
 
 function EditarRecado({ recado, onEditar, editando, setEditando }) {
   const [titulo, setTitulo] = useState(recado.titulo);

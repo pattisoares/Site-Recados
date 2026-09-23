@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import axios from '../services/api.js'; 
-import RecadoForm from './recadoForm.js';
-import RecadoItem from './recadoItem.js';
+import axios from '../services/api.jsx'; 
+import RecadoForm from './recadoForm.jsx';
+import RecadoItem from './recadoItem.jsx';
 
 function Recados() {
   const [recados, setRecados] = useState([]);
