@@ -2,22 +2,22 @@ import { useState } from 'react';
 
 function RecadoForm({ onCriar }) {
   const [titulo, setTitulo] = useState('');
-  const [descricao, setDescricao] = useState('');
+  const [texto, setTexto] = useState('');
   const [enviando, setEnviando] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!titulo.trim() || !descricao.trim()) {
+    if (!titulo.trim() || !texto.trim()) {
       alert('Preencha todos os campos.');
       return;
     }
 
     setEnviando(true);
     try {
-      await onCriar({ titulo, descricao });
+      await onCriar({ titulo, texto });
       setTitulo('');
-      setDescricao('');
+      setTexto('');
     } catch (err) {
       console.error(err);
     } finally {
@@ -39,11 +39,11 @@ function RecadoForm({ onCriar }) {
       </div>
 
       <div>
-        <label htmlFor="descricao">Descrição</label>
+        <label htmlFor="texto">Descrição</label>
         <textarea
-          id="descricao"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
+          id="texto"
+          value={texto}
+          onChange={(e) => setTexto(e.target.value)}
           placeholder="Digite a descrição"
         />
       </div>

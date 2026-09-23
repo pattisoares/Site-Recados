@@ -3,13 +3,13 @@ import api from '../services/api.jsx';
 
 function EditarRecado({ recado, onEditar, editando, setEditando }) {
   const [titulo, setTitulo] = useState(recado.titulo);
-  const [descricao, setDescricao] = useState(recado.descricao);
+  const [Texto, setTexto] = useState(recado.Texto);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState(null);
 
   function handleCancelar() {
     setTitulo(recado.titulo);
-    setDescricao(recado.descricao);
+    setTexto(recado.Texto);
     setErro(null);
     setEditando(false);
   }
@@ -18,14 +18,14 @@ function EditarRecado({ recado, onEditar, editando, setEditando }) {
     e.preventDefault();
     setErro(null);
 
-    if (!titulo.trim() || !descricao.trim()) {
+    if (!titulo.trim() || !Texto.trim()) {
       setErro('Preencha todos os campos.');
       return;
     }
 
     setSalvando(true);
     try {
-      const { data } = await api.put(`/recados/${recado.id}`, { titulo, descricao });
+      const { data } = await api.put(`/recados/${recado.id}`, { titulo, Texto });
       onEditar(data);
       setEditando(false);
     } catch (err) {
@@ -56,11 +56,11 @@ function EditarRecado({ recado, onEditar, editando, setEditando }) {
       </div>
 
       <div>
-        <label htmlFor={`descricao-${recado.id}`}>Descrição</label>
+        <label htmlFor={`Texto-${recado.id}`}>Descrição</label>
         <textarea
-          id={`descricao-${recado.id}`}
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
+          id={`Texto-${recado.id}`}
+          value={Texto}
+          onChange={(e) => setTexto(e.target.value)}
         />
       </div>
 

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RecadoController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,7 +11,7 @@ use App\Http\Controllers\RecadoController;
 */
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login',    [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/recados/{id}',    [RecadoController::class, 'update']);
     Route::delete('/recados/{id}', [RecadoController::class, 'destroy']);
     */
-    
+
     Route::post('/logout', [AuthController::class, 'logout']);
-  
+
 });

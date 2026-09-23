@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Recado;
+use Illuminate\Http\Request;
 
 class RecadoController extends Controller
 {
@@ -18,7 +18,7 @@ class RecadoController extends Controller
     {
         $request->validate([
             'titulo' => 'required|string|max:100',
-            'texto'  => 'required|string',
+            'texto' => 'required|string',
         ]);
 
         return auth()->user()->recados()->create([
@@ -28,27 +28,29 @@ class RecadoController extends Controller
     }
 
     // ATUALIZAR recado
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'titulo' => 'sometimes|string|max:100',
-        'texto'  => 'sometimes|string',
-    ]);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'titulo' => 'sometimes|string|max:100',
+            'texto' => 'sometimes|string',
+        ]);
 
-    $recado = Recado::where('id', $id)
-        ->where('user_id', auth()->id())
-        ->firstOrFail();
+        $recado = Recado::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
-    $recado->update($request->only('titulo', 'texto'));
+        $recado->update($request->only('titulo', 'texto'));
 
-    return response()->json($recado);
-}
-    public function show($id){
-        return Recado::where('id', $id)
-        ->where('user_id', auth()->id())
-        ->firstOrFail();
+        return response()->json($recado);
     }
-    
+
+    public function show($id)
+    {
+        return Recado::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+    }
+
     // DELETAR recado
     public function destroy($id)
     {
@@ -59,7 +61,7 @@ public function update(Request $request, $id)
         $recado->delete();
 
         return response()->json([
-            'message' => 'Recado deletado com sucesso'
+            'message' => 'Recado deletado com sucesso',
         ], 200);
     }
 }

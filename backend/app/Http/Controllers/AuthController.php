@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -43,7 +43,7 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
         ], 201);
     }
 
@@ -51,34 +51,35 @@ class AuthController extends Controller
     // LOGIN
     // =========================
     public function login(Request $request)
-{
-    $request->validate(
-        [
-            'email' => 'required|email',
-            'password' => 'required',
-        ],
-        [
-            'email.required' => 'Informe um e-mail.',
-            'email.email' => 'Informe um e-mail válido.',
-            'password.required' => 'Informe uma senha.',
-        ]
-    );
+    {
+        $request->validate(
+            [
+                'email' => 'required|email',
+                'password' => 'required',
+            ],
+            [
+                'email.required' => 'Informe um e-mail.',
+                'email.email' => 'Informe um e-mail válido.',
+                'password.required' => 'Informe uma senha.',
+            ]
+        );
 
-    if (!Auth::attempt($request->only('email', 'password'))) {
+        if (! Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
+                'message' => 'E-mail ou senha incorretos.',
+            ], 401);
+        }
+
+        $user = Auth::user();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
-            'message' => 'E-mail ou senha incorretos.'
-        ], 401);
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 
-    $user = Auth::user();
-
-    $token = $user->createToken('auth_token')->plainTextToken;
-
-    return response()->json([
-        'user' => $user,
-        'token' => $token
-    ]);
-}
     // =========================
     // LOGOUT
     // =========================
@@ -87,7 +88,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logout realizado.'
+            'message' => 'Logout realizado.',
         ]);
     }
 }

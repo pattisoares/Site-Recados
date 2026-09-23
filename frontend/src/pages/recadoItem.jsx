@@ -10,7 +10,7 @@ function RecadoItem({ recado, onExcluir, onEditar }) {
       {!editando && (
         <>
           <h3>{recado.titulo}</h3>
-          <p>{recado.descricao}</p>
+          <p>{recado.texto}</p>
         </>
       )}
 
