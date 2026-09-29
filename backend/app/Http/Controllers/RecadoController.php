@@ -19,9 +19,17 @@ class RecadoController extends Controller
     // CRIAR recado
     public function store(RecadoRequest $request)
     {
+        $caminhoAnexo = null;
+
+        if ($request->hasFile('anexo')) {
+            $caminhoAnexo = $request->file('anexo')
+                ->store('recados', 'public');
+        }
+
         $recado = auth()->user()->recados()->create([
             'titulo' => $request->titulo,
             'texto'  => $request->texto,
+            'anexo'  => $caminhoAnexo,
         ]);
 
         return new RecadoResource($recado);
@@ -44,7 +52,14 @@ class RecadoController extends Controller
 
         $this->authorize('update', $recado);
 
-        $recado->update($request->only('titulo', 'texto'));
+        $dados = $request->only('titulo', 'texto');
+
+        if ($request->hasFile('anexo')) {
+            $dados['anexo'] = $request->file('anexo')
+                ->store('recados', 'public');
+        }
+
+        $recado->update($dados);
 
         return new RecadoResource($recado);
     }
