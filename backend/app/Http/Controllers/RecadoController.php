@@ -27,24 +27,24 @@ class RecadoController extends Controller
         return new RecadoResource($recado);
     }
 
-    // ATUALIZAR recado
-    public function update(RecadoRequest $request, $id)
+    // EXIBIR recado
+    public function show($id)
     {
-        $recado = Recado::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $recado = Recado::findOrFail($id);
 
-        $recado->update($request->only('titulo', 'texto'));
+        $this->authorize('view', $recado);
 
         return new RecadoResource($recado);
     }
 
-    // EXIBIR recado
-    public function show($id)
+    // ATUALIZAR recado
+    public function update(RecadoRequest $request, $id)
     {
-        $recado = Recado::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $recado = Recado::findOrFail($id);
+
+        $this->authorize('update', $recado);
+
+        $recado->update($request->only('titulo', 'texto'));
 
         return new RecadoResource($recado);
     }
@@ -52,9 +52,9 @@ class RecadoController extends Controller
     // DELETAR recado
     public function destroy($id)
     {
-        $recado = Recado::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $recado = Recado::findOrFail($id);
+
+        $this->authorize('delete', $recado);
 
         $recado->delete();
 
