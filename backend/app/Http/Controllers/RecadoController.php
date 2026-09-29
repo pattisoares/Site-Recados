@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recado;
-use Illuminate\Http\Request;
+use App\Http\Requests\RecadoRequest;
 
 class RecadoController extends Controller
 {
@@ -14,27 +14,17 @@ class RecadoController extends Controller
     }
 
     // CRIAR recado
-    public function store(Request $request)
+    public function store(RecadoRequest $request)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:100',
-            'texto' => 'required|string',
-        ]);
-
         return auth()->user()->recados()->create([
             'titulo' => $request->titulo,
-            'texto' => $request->texto,
+            'texto'  => $request->texto,
         ]);
     }
 
     // ATUALIZAR recado
-    public function update(Request $request, $id)
+    public function update(RecadoRequest $request, $id)
     {
-        $request->validate([
-            'titulo' => 'sometimes|string|max:100',
-            'texto' => 'sometimes|string',
-        ]);
-
         $recado = Recado::where('id', $id)
             ->where('user_id', auth()->id())
             ->firstOrFail();
@@ -44,6 +34,7 @@ class RecadoController extends Controller
         return response()->json($recado);
     }
 
+    // EXIBIR recado
     public function show($id)
     {
         return Recado::where('id', $id)
