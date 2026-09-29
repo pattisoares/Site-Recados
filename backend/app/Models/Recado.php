@@ -13,9 +13,9 @@ class Recado extends Model
         'user_id',
         'titulo',
         'texto',
+        'anexo',
     ];
 
-    // relacionamento: cada recado pertence a um usuário
     public function user()
     {
         return $this->belongsTo(User::class);
