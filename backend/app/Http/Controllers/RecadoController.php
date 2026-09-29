@@ -4,22 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Recado;
 use App\Http\Requests\RecadoRequest;
+use App\Http\Resources\RecadoResource;
 
 class RecadoController extends Controller
 {
     // LISTAR recados do usuário logado
     public function index()
     {
-        return auth()->user()->recados;
+        return RecadoResource::collection(
+            auth()->user()->recados
+        );
     }
 
     // CRIAR recado
     public function store(RecadoRequest $request)
     {
-        return auth()->user()->recados()->create([
+        $recado = auth()->user()->recados()->create([
             'titulo' => $request->titulo,
             'texto'  => $request->texto,
         ]);
+
+        return new RecadoResource($recado);
     }
 
     // ATUALIZAR recado
@@ -31,15 +36,17 @@ class RecadoController extends Controller
 
         $recado->update($request->only('titulo', 'texto'));
 
-        return response()->json($recado);
+        return new RecadoResource($recado);
     }
 
     // EXIBIR recado
     public function show($id)
     {
-        return Recado::where('id', $id)
+        $recado = Recado::where('id', $id)
             ->where('user_id', auth()->id())
             ->firstOrFail();
+
+        return new RecadoResource($recado);
     }
 
     // DELETAR recado
