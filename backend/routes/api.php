@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RecadoController;
+use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,13 +23,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('recados', RecadoController::class);
-    /*
-    Route::get('/recados', [RecadoController::class, 'index']);
-    Route::post('/recados', [RecadoController::class, 'store']);
-    Route::put('/recados/{id}',    [RecadoController::class, 'update']);
-    Route::delete('/recados/{id}', [RecadoController::class, 'destroy']);
-    */
+
+    Route::get(
+        '/recados/{id}/anexo',
+        [RecadoController::class, 'downloadAnexo']
+    );
+
+    Route::get(
+        '/cep/{cep}',
+        [ApiController::class, 'buscarCep']
+    );
 
     Route::post('/logout', [AuthController::class, 'logout']);
-
 });

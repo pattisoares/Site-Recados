@@ -77,4 +77,22 @@ class RecadoController extends Controller
             'message' => 'Recado deletado com sucesso',
         ], 200);
     }
+
+    // DOWNLOAD DO ANEXO
+    public function downloadAnexo($id)
+    {
+        $recado = Recado::findOrFail($id);
+
+        $this->authorize('view', $recado);
+
+        if (!$recado->anexo) {
+            return response()->json([
+                'message' => 'Este recado não possui anexo.'
+            ], 404);
+        }
+
+        return response()->download(
+            storage_path('app/public/' . $recado->anexo)
+        );
+    }
 }
