@@ -3,13 +3,13 @@ import api from '../services/api.jsx';
 
 function EditarRecado({ recado, onEditar, editando, setEditando }) {
   const [titulo, setTitulo] = useState(recado.titulo);
-  const [texto, setTexto] = useState(recado.texto);
+  const [descricao, setDescricao] = useState(recado.texto);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState(null);
 
   function handleCancelar() {
     setTitulo(recado.titulo);
-    setTexto(recado.texto);
+    setTexto(recado.descricao);
     setErro(null);
     setEditando(false);
   }
@@ -26,7 +26,7 @@ function EditarRecado({ recado, onEditar, editando, setEditando }) {
     setSalvando(true);
     try {
       const { data } = await api.put(`/recados/${recado.id}`, { titulo, texto });
-      onEditar(data);
+      onEditar(data.data ?? data);
       setEditando(false);
     } catch (err) {
       setErro('Erro ao salvar alterações.');
@@ -58,8 +58,8 @@ function EditarRecado({ recado, onEditar, editando, setEditando }) {
       <div>
         <label htmlFor={`texto-${recado.id}`}>Descrição</label>
         <textarea
-          id={`texto-${recado.id}`}
-          value={texto}
+          id={`descricao-${recado.id}`}
+          value={descricao}
           onChange={(e) => setTexto(e.target.value)}
         />
       </div>

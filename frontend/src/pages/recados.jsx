@@ -12,8 +12,9 @@ function Recados() {
     async function carregarRecados() {
       try {
         setCarregando(true);
+
         const { data } = await axios.get('/recados');
-        setRecados(data);
+        setRecados(Array.isArray(data) ? data : data.data || []);
       } catch (err) {
         setErro('Erro ao carregar recados.');
       } finally {
@@ -37,7 +38,8 @@ function Recados() {
   async function handleCriar(campos) {
     try {
       const { data } = await axios.post('/recados', campos);
-      setRecados(prev => [data, ...prev]);
+      const novoRecado = data.data ?? data;
+      setRecados(prev => [novoRecado, ...prev]);
     } catch (err) {
       setErro('Erro ao criar recado.');
     }
@@ -51,16 +53,14 @@ function Recados() {
       {erro && <p className="erro">{erro}</p>}
 
       <ul>
-        <ul>
-          {recados.map(recado => (
-            <RecadoItem
-              key={recado.id}
-              recado={recado}
-              onExcluir={handleExcluir}
-              onEditar={handleEditar}
-              />
-              ))}
-        </ul>
+        {recados.map(recado => (
+          <RecadoItem
+            key={recado.id}
+            recado={recado}
+            onExcluir={handleExcluir}
+            onEditar={handleEditar}
+          />
+        ))}
       </ul>
     </div>
   );
