@@ -14,15 +14,23 @@ function RecadoItem({ recado, onExcluir, onEditar }) {
   return (
     <li className="recado-item">
       {!editando && (
-        <ul>
+      <p>
           <h3>{recado.titulo}</h3>
           <p>{recado.texto}</p>
-          {horaServidor && (
-            <small className='recado-hora'>
-              {horaServidor.toLocaleString('pt-BR')}
-            </small>
-          )}
-        </ul>
+          <p>{recado.anexo !== null && recado.anexo !== "" && (
+            <img
+              src={`http://localhost:8000/api/recados/${recado.id}/anexo`}
+              alt="Anexo do recado"
+              className="recado-imagem"
+            />
+          )}</p>
+
+        {horaServidor && (
+        <small className='recado-hora'>
+          consultado em: {horaServidor.toLocaleString('pt-BR')}
+        </small>
+        )}
+      </p>
       )}
 
       <EditarRecado

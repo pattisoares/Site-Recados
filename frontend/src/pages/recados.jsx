@@ -35,13 +35,16 @@ function Recados() {
     setRecados(prev => prev.filter(recado => recado.id !== id));
   }
 
-  async function handleCriar(campos) {
+  async function handleCriar(formData) {
     try {
-      const { data } = await axios.post('/recados', campos);
+      const { data } = await axios.post('/recados', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       const novoRecado = data.data ?? data;
       setRecados(prev => [novoRecado, ...prev]);
     } catch (err) {
       setErro('Erro ao criar recado.');
+      throw err; // relança para o RecadoForm capturar o erro de validação
     }
   }
 
