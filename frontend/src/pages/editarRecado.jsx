@@ -3,13 +3,13 @@ import api from '../services/api.jsx';
 
 function EditarRecado({ recado, onEditar, editando, setEditando }) {
   const [titulo, setTitulo] = useState(recado.titulo);
-  const [descricao, setDescricao] = useState(recado.texto);
+  const [texto, setTexto] = useState(recado.texto);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState(null);
 
   function handleCancelar() {
     setTitulo(recado.titulo);
-    setTexto(recado.descricao);
+    setTexto(recado.texto);
     setErro(null);
     setEditando(false);
   }
@@ -58,8 +58,8 @@ function EditarRecado({ recado, onEditar, editando, setEditando }) {
       <div>
         <label htmlFor={`texto-${recado.id}`}>Descrição</label>
         <textarea
-          id={`descricao-${recado.id}`}
-          value={descricao}
+          id={`texto-${recado.id}`}
+          value={texto}
           onChange={(e) => setTexto(e.target.value)}
         />
       </div>
