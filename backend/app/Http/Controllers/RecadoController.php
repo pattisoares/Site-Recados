@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Recado;
 use App\Http\Requests\RecadoRequest;
 use App\Http\Resources\RecadoResource;
+use App\Http\Requests\AnexoRequest;
+use Illuminate\Support\Facades\Storage;
 
 class RecadoController extends Controller
 {
@@ -78,6 +80,26 @@ class RecadoController extends Controller
         ], 200);
     }
 
+    // UPLOAD DO ANEXO
+    public function uploadAnexo(AnexoRequest $request, $id)
+    {
+        $recado = Recado::findOrFail($id);
+
+        $this->authorize('update', $recado);
+
+        if ($recado->anexo) {
+            Storage::disk('public')->delete($recado->anexo);
+        }
+
+        $caminhoAnexo = $request->file('anexo')
+            ->store('recados', 'public');
+
+        $recado->update([
+            'anexo' => $caminhoAnexo,
+        ]);
+
+        return new RecadoResource($recado);
+    }
     // DOWNLOAD DO ANEXO
     public function downloadAnexo($id)
     {

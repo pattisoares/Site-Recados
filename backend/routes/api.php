@@ -29,6 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
         [RecadoController::class, 'downloadAnexo']
     );
 
+    Route::post(
+        '/recados/{id}/anexo',
+        [RecadoController::class, 'uploadAnexo']
+    );
+
     Route::get(
         '/cep/{cep}',
         [ApiController::class, 'buscarCep']
