@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react';
-import axios from '../services/api.jsx'; 
+import axios from '../services/api.jsx';
 import RecadoForm from './recadoForm.jsx';
 import RecadoItem from './recadoItem.jsx';
 
@@ -16,7 +17,11 @@ function Recados() {
         const { data } = await axios.get('/recados');
         setRecados(Array.isArray(data) ? data : data.data || []);
       } catch (err) {
-        setErro('Erro ao carregar recados.');
+        console.log('Erro na API:', err.response?.data || err.message);
+
+        setErro(
+          `Erro ao carregar recados. Código: ${err.response?.status || 'Sem resposta'}. ${err.response?.data?.message || err.message}`
+        );
       } finally {
         setCarregando(false);
       }
@@ -27,7 +32,9 @@ function Recados() {
 
   function handleEditar(recadoAtualizado) {
     setRecados(prev =>
-      prev.map(recado => (recado.id === recadoAtualizado.id ? recadoAtualizado : recado))
+      prev.map(recado =>
+        recado.id === recadoAtualizado.id ? recadoAtualizado : recado
+      )
     );
   }
 
@@ -37,14 +44,12 @@ function Recados() {
 
   async function handleCriar(formData) {
     try {
-      const { data } = await axios.post('/recados', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const { data } = await axios.post('/recados', formData);
       const novoRecado = data.data ?? data;
       setRecados(prev => [novoRecado, ...prev]);
     } catch (err) {
       setErro('Erro ao criar recado.');
-      throw err; // relança para o RecadoForm capturar o erro de validação
+      throw err;
     }
   }
 

@@ -75,10 +75,10 @@ function RecadoForm({ onCriar }) {
         <input
           id="anexo"
           type="file"
-          accept=".jpg,.jpeg,.png"
+          accept=".jpg,.jpeg,.png,.pdf"
           onChange={handleArquivoChange}
         />
-        <small>Formatos aceitos: JPG, JPEG e PNG Máximo 2MB.</small>
+        <small>Formatos aceitos: JPG, JPEG, PNG e PDF. Máximo 2 MB.</small>
       </div>
 
       {erro && <p className="erro">{erro}</p>}

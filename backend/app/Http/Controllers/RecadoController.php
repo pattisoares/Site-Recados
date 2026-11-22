@@ -22,16 +22,20 @@ class RecadoController extends Controller
     public function store(RecadoRequest $request)
     {
         $caminhoAnexo = null;
+        $nomeAnexo = null;
 
         if ($request->hasFile('anexo')) {
-            $caminhoAnexo = $request->file('anexo')
-                ->store('recados', 'public');
+            $arquivo = $request->file('anexo');
+
+            $caminhoAnexo = $arquivo->store('recados', 'public');
+            $nomeAnexo = $arquivo->getClientOriginalName();
         }
 
         $recado = auth()->user()->recados()->create([
-            'titulo' => $request->titulo,
-            'texto'  => $request->texto,
-            'anexo'  => $caminhoAnexo,
+            'titulo'     => $request->titulo,
+            'texto'      => $request->texto,
+            'anexo'      => $caminhoAnexo,
+            'nome_anexo' => $nomeAnexo,
         ]);
 
 $validated['user_id'] = Auth::id();
@@ -61,8 +65,14 @@ $validated['user_id'] = Auth::id();
         $dados = $request->only('titulo', 'texto');
 
         if ($request->hasFile('anexo')) {
-            $dados['anexo'] = $request->file('anexo')
-                ->store('recados', 'public');
+            if ($recado->anexo) {
+                Storage::disk('public')->delete($recado->anexo);
+            }
+
+            $arquivo = $request->file('anexo');
+
+            $dados['anexo'] = $arquivo->store('recados', 'public');
+            $dados['nome_anexo'] = $arquivo->getClientOriginalName();
         }
 
         $recado->update($dados);
@@ -95,15 +105,19 @@ $validated['user_id'] = Auth::id();
             Storage::disk('public')->delete($recado->anexo);
         }
 
-        $caminhoAnexo = $request->file('anexo')
-            ->store('recados', 'public');
+        $arquivo = $request->file('anexo');
+
+        $caminhoAnexo = $arquivo->store('recados', 'public');
+        $nomeAnexo = $arquivo->getClientOriginalName();
 
         $recado->update([
-            'anexo' => $caminhoAnexo,
+            'anexo'      => $caminhoAnexo,
+            'nome_anexo' => $nomeAnexo,
         ]);
 
         return new RecadoResource($recado);
     }
+
     // DOWNLOAD DO ANEXO
     public function downloadAnexo($id)
     {
@@ -117,8 +131,6 @@ $validated['user_id'] = Auth::id();
             ], 404);
         }
 
-        return response()->download(
-            storage_path('app/public/' . $recado->anexo)
-        );
+        return Storage::disk('public')->response($recado->anexo);
     }
 }
