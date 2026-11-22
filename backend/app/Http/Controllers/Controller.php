@@ -9,8 +9,3 @@ abstract class Controller extends BaseController
 {
     use AuthorizesRequests;
 }
-
-$validated = $request->validate([
-    'titulo' => 'required|string|max:255',
-    'texto' => 'required|string',
-]);
