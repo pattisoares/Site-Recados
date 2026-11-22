@@ -34,6 +34,8 @@ class RecadoController extends Controller
             'anexo'  => $caminhoAnexo,
         ]);
 
+$validated['user_id'] = Auth::id();
+
         return new RecadoResource($recado);
     }
 
@@ -50,6 +52,8 @@ class RecadoController extends Controller
     // ATUALIZAR recado
     public function update(RecadoRequest $request, $id)
     {
+        $recado = Recado::where('user_id', Auth::id())->findOrFail($id);
+
         $recado = Recado::findOrFail($id);
 
         $this->authorize('update', $recado);
