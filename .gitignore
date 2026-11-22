@@ -1,0 +1,18 @@
+
+# Arquivos de ambiente e senhas
+.env
+.env.*
+!.env.example
+
+# Dependências
+/node_modules
+/vendor
+
+# Arquivos temporários
+*.log
+.DS_Store
+Thumbs.db
+
+# Laravel
+/backend/storage/*.key
+/backend/bootstrap/cache/*
