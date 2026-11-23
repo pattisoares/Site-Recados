@@ -3,6 +3,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     container_name: recados-backend
     env_file:
       - ./backend/.env
@@ -17,6 +18,8 @@ services:
       DB_HOST: db
       DB_PORT: 3306
     volumes:
+      - ./backend:/var/www
+      - ./backend/vendor:/var/www/vendor
       - anexos_recados:/var/www/storage/app/public
     depends_on:
       db:
@@ -25,6 +28,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
     container_name: recados-frontend
     ports:
       - "5173:5173"
