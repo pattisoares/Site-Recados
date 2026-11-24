@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import api from '../services/api';
 
@@ -17,12 +18,31 @@ function Login({ onLogin }) {
     }
 
     setEnviando(true);
+
     try {
-      const { data } = await api.post('/login', { email, password });
-      localStorage.setItem('token', data.token);
-      onLogin(data.token);
+      // Solicita o cookie CSRF ao Laravel
+      await api.get('/sanctum/csrf-cookie', {
+        baseURL: 'http://localhost:8000',
+      });
+
+      // Realiza o login usando a sessão
+      const { data } = await api.post('/login', {
+        email,
+        password,
+      });
+
+      onLogin(data.user);
+
     } catch (err) {
-      setErro('Email ou senha inválidos.');
+      if (err.response?.status === 401) {
+        setErro('Email ou senha inválidos.');
+      } else {
+        setErro(
+          `Erro ${err.response?.status || 'de conexão'}: ${
+            err.response?.data?.message || err.message
+          }`
+        );
+      }
     } finally {
       setEnviando(false);
     }
@@ -31,6 +51,7 @@ function Login({ onLogin }) {
   return (
     <div className="login">
       <h2>Login</h2>
+
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>

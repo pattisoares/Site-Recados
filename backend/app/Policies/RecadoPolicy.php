@@ -14,7 +14,8 @@ class RecadoPolicy
 
     public function view(User $user, Recado $recado): bool
     {
-        return $user->id === $recado->user_id;
+        return $user->id === $recado->user_id
+            || $user->isAdmin();
     }
 
     public function create(User $user): bool

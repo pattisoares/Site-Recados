@@ -38,8 +38,6 @@ class RecadoController extends Controller
             'nome_anexo' => $nomeAnexo,
         ]);
 
-$validated['user_id'] = Auth::id();
-
         return new RecadoResource($recado);
     }
 
@@ -56,15 +54,16 @@ $validated['user_id'] = Auth::id();
     // ATUALIZAR recado
     public function update(RecadoRequest $request, $id)
     {
-        $recado = Recado::where('user_id', Auth::id())->findOrFail($id);
-
-        $recado = Recado::findOrFail($id);
+        $recado = Recado::where('user_id', auth()->id())
+            ->findOrFail($id);
 
         $this->authorize('update', $recado);
 
         $dados = $request->only('titulo', 'texto');
 
+        // Substituir o anexo atual
         if ($request->hasFile('anexo')) {
+
             if ($recado->anexo) {
                 Storage::disk('public')->delete($recado->anexo);
             }
@@ -73,6 +72,17 @@ $validated['user_id'] = Auth::id();
 
             $dados['anexo'] = $arquivo->store('recados', 'public');
             $dados['nome_anexo'] = $arquivo->getClientOriginalName();
+
+        }
+        // Remover o anexo atual
+        elseif ($request->boolean('remover_anexo')) {
+
+            if ($recado->anexo) {
+                Storage::disk('public')->delete($recado->anexo);
+            }
+
+            $dados['anexo'] = null;
+            $dados['nome_anexo'] = null;
         }
 
         $recado->update($dados);
