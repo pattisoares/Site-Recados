@@ -11,7 +11,6 @@ function Recados({ usuario }) {
   const [sucessoCriacao, setSucessoCriacao] = useState('');
   const [recadoEditadoId, setRecadoEditadoId] = useState(null);
 
-
   useEffect(() => {
     async function carregarRecados() {
       try {
@@ -119,7 +118,6 @@ function Recados({ usuario }) {
           {recados.length === 1 ? 'recado' : 'recados'}.
         </p>
       </div>
-
 
       <RecadoForm onCriar={handleCriar} />
 
