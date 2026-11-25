@@ -17,12 +17,14 @@ A aplicação permite que usuários realizem cadastro, autenticação e gerencia
 ## Funcionalidades
 
 ### Autenticação
+
 - Cadastro de usuários.
 - Login e logout.
 - Autenticação utilizando Laravel Sanctum e cookies de sessão HttpOnly.
 - Rotas protegidas.
 
 ### Gerenciamento de recados
+
 - Criar recados com título e texto.
 - Listar os próprios recados.
 - Editar recados.
@@ -30,18 +32,21 @@ A aplicação permite que usuários realizem cadastro, autenticação e gerencia
 - Visualizar datas de criação e modificação.
 
 ### Anexos
+
 - Upload opcional de imagens JPG, JPEG, PNG e arquivos PDF.
 - Validação de tipo e tamanho.
 - Substituição e remoção de anexos.
 - Download protegido por autorização.
 
 ### Administração
+
 - Usuários comuns acessam somente seus próprios recados.
 - Administradores podem visualizar os recados de todos os usuários.
 - Tela separada para moderação.
 - Administradores também podem baixar anexos.
 
 ### Integração com API externa
+
 O sistema utiliza a API pública [ViaCEP](https://viacep.com.br/) para consultar informações de endereço a partir de um CEP.
 
 Endpoint disponibilizado pelo backend:
@@ -97,7 +102,7 @@ No Windows CMD, também é possível utilizar:
 copy backend\.env.example backend\.env
 ```
 
-Editar `backend/.env` e configurar:
+Editar `backend/.env` e configurar as variáveis:
 
 ```env
 APP_NAME=Laravel
@@ -133,7 +138,7 @@ Utilizar senhas próprias e manter os arquivos `.env` fora do repositório.
 
 ### 3. Construir e iniciar os containers
 
-Na pasta raiz do projeto:
+Na pasta raiz do projeto, executar:
 
 ```bash
 docker compose up -d --build
@@ -182,11 +187,11 @@ Os demais usuários podem realizar seu próprio cadastro pela aplicação.
 
 ### 6. Acessar o sistema
 
-Frontend:
+**Frontend:**
 
 http://localhost:5173
 
-Backend:
+**Backend:**
 
 http://localhost:8000
 
@@ -236,7 +241,7 @@ docker compose start
 Projeto desenvolvido para a disciplina de Laboratório de Desenvolvimento Web.
 
 - Dimitri Barbera Guimaraes
-- Marcela da Silva Bezerra 
+- Marcela da Silva Bezerra
 - Matheus Dedim
 - Patricia Benedetti Soares
 - Patricia Dreyer Secchiaroli
