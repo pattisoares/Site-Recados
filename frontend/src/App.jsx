@@ -7,11 +7,11 @@ import './App.css';
 import api from './services/api.jsx';
 import AdminRecados from './pages/AdminRecados.jsx';
 
-
 function App() {
   const [usuario, setUsuario] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [tela, setTela] = useState('login');
+  const [mostrarTopo, setMostrarTopo] = useState(false);
 
   // Verifica se já existe uma sessão ativa
   useEffect(() => {
@@ -28,6 +28,26 @@ function App() {
 
     verificarSessao();
   }, []);
+
+  // Controla a exibição da seta
+  useEffect(() => {
+    function verificarRolagem() {
+      setMostrarTopo(window.scrollY > 200);
+    }
+
+    window.addEventListener('scroll', verificarRolagem);
+
+    return () => {
+      window.removeEventListener('scroll', verificarRolagem);
+    };
+  }, []);
+
+  function voltarAoTopo() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
 
   function handleAutenticado(novoUsuario) {
     setUsuario(novoUsuario);
@@ -93,6 +113,17 @@ function App() {
           </>
         )}
       </main>
+
+      {mostrarTopo && (
+        <button
+          className="botao-voltar-topo"
+          onClick={voltarAoTopo}
+          title="Voltar ao topo"
+          aria-label="Voltar ao topo"
+        >
+          ↑
+        </button>
+      )}
     </div>
   );
 }

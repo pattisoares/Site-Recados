@@ -2,17 +2,11 @@
 import { useState, useEffect } from 'react';
 import ExcluirRecado from './excluirRecado.jsx';
 import EditarRecado from './editarRecado.jsx';
-import { HoraAtual } from '../services/apiTempo.jsx';
 import api from '../services/api.jsx';
 
 function RecadoItem({ recado, onExcluir, onEditar, mensagemSucesso }) {
   const [editando, setEditando] = useState(false);
-  const [horaServidor, setHoraServidor] = useState(null);
   const [anexo, setAnexo] = useState(null);
-
-  useEffect(() => {
-    HoraAtual().then(setHoraServidor);
-  }, []);
 
   useEffect(() => {
     if (!recado.anexo) {
@@ -53,6 +47,24 @@ function RecadoItem({ recado, onExcluir, onEditar, mensagemSucesso }) {
     };
   }, [recado.id, recado.anexo]);
 
+  function formatarData(data) {
+    if (!data) return 'Não informada';
+
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(data));
+  }
+
+  const foiModificado =
+    recado.created_at &&
+    recado.updated_at &&
+    new Date(recado.updated_at).getTime() >
+    new Date(recado.created_at).getTime();
+
   const nomeArquivo = recado.nome_anexo ||
     (recado.anexo ? recado.anexo.split('/').pop() : null);
 
@@ -69,6 +81,18 @@ function RecadoItem({ recado, onExcluir, onEditar, mensagemSucesso }) {
           <h3>{recado.titulo}</h3>
 
           <p>{recado.texto}</p>
+
+          <div className="recado-datas">
+            <small className="recado-hora">
+              Criado em: {formatarData(recado.created_at)}
+            </small>
+
+            {foiModificado && (
+              <small className="recado-hora">
+                Modificado em: {formatarData(recado.updated_at)}
+              </small>
+            )}
+          </div>
 
           <p>
             <strong>Anexo:</strong>{' '}
@@ -161,12 +185,6 @@ function RecadoItem({ recado, onExcluir, onEditar, mensagemSucesso }) {
 
           {recado.anexo && !anexo && (
             <p>Carregando anexo...</p>
-          )}
-
-          {horaServidor && (
-            <small className="recado-hora">
-              consultado em: {horaServidor.toLocaleString('pt-BR')}
-            </small>
           )}
         </div>
       )}
