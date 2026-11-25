@@ -92,7 +92,7 @@ function RecadoForm({ onCriar }) {
         <small>{texto.length}/2000 caracteres</small>
       </div>
 
-      <div>
+           <div>
         <label htmlFor="anexo">Anexo (opcional)</label>
 
         <input
