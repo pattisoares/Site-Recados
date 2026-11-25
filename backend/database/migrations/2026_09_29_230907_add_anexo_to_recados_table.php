@@ -10,14 +10,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('recados', function (Blueprint $table) {
-            $table->string('nome_anexo')->nullable()->after('anexo');
+            $table->string('anexo')->nullable();
         });
     }
 
     public function down(): void
     {
         Schema::table('recados', function (Blueprint $table) {
-            $table->dropColumn('nome_anexo');
+            $table->dropColumn('anexo');
         });
     }
 };
