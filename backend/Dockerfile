@@ -10,15 +10,26 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     zip \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && rm -rf /var/lib/apt/lists/*
+
+# Instala as extensões principais do PHP
+RUN docker-php-ext-install -j1 \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip
+
+# Instala o driver MySQL separadamente
+RUN docker-php-ext-install -j1 pdo_mysql \
+    && php -r "if (!extension_loaded('pdo_mysql')) { exit(1); }"
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
 COPY . .
-
-COPY artisan ./artisan
 
 RUN composer install --no-interaction --prefer-dist
 

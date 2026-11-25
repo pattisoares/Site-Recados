@@ -27,7 +27,7 @@ class RecadoController extends Controller
         if ($request->hasFile('anexo')) {
             $arquivo = $request->file('anexo');
 
-            $caminhoAnexo = $arquivo->store('recados', 'public');
+            $caminhoAnexo = $arquivo->store('recados', 'local');
             $nomeAnexo = $arquivo->getClientOriginalName();
         }
 
@@ -64,18 +64,18 @@ class RecadoController extends Controller
         // Substituir o anexo atual
         if ($request->hasFile('anexo')) {
             if ($recado->anexo) {
-                Storage::disk('public')->delete($recado->anexo);
+                Storage::disk('local')->delete($recado->anexo);
             }
 
             $arquivo = $request->file('anexo');
 
-            $dados['anexo'] = $arquivo->store('recados', 'public');
+            $dados['anexo'] = $arquivo->store('recados', 'local');
             $dados['nome_anexo'] = $arquivo->getClientOriginalName();
         }
         // Remover o anexo atual
         elseif ($request->boolean('remover_anexo')) {
             if ($recado->anexo) {
-                Storage::disk('public')->delete($recado->anexo);
+                Storage::disk('local')->delete($recado->anexo);
             }
 
             $dados['anexo'] = null;
@@ -95,7 +95,7 @@ class RecadoController extends Controller
         $this->authorize('delete', $recado);
 
         if ($recado->anexo) {
-            Storage::disk('public')->delete($recado->anexo);
+            Storage::disk('local')->delete($recado->anexo);
         }
 
         $recado->delete();
@@ -113,13 +113,13 @@ class RecadoController extends Controller
         $this->authorize('update', $recado);
 
         if ($recado->anexo) {
-            Storage::disk('public')->delete($recado->anexo);
+            Storage::disk('local')->delete($recado->anexo);
         }
 
         $arquivo = $request->file('anexo');
 
         $recado->update([
-            'anexo' => $arquivo->store('recados', 'public'),
+            'anexo' => $arquivo->store('recados', 'local'),
             'nome_anexo' => $arquivo->getClientOriginalName(),
         ]);
 
@@ -137,7 +137,7 @@ class RecadoController extends Controller
             abort(404, 'Este recado não possui anexo.');
         }
 
-        return Storage::disk('public')->download(
+        return Storage::disk('local')->download(
             $recado->anexo,
             $recado->nome_anexo
         );
