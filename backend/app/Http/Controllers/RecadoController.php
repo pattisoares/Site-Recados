@@ -32,9 +32,9 @@ class RecadoController extends Controller
         }
 
         $recado = auth()->user()->recados()->create([
-            'titulo'     => $request->titulo,
-            'texto'      => $request->texto,
-            'anexo'      => $caminhoAnexo,
+            'titulo' => $request->titulo,
+            'texto' => $request->texto,
+            'anexo' => $caminhoAnexo,
             'nome_anexo' => $nomeAnexo,
         ]);
 
@@ -63,7 +63,6 @@ class RecadoController extends Controller
 
         // Substituir o anexo atual
         if ($request->hasFile('anexo')) {
-
             if ($recado->anexo) {
                 Storage::disk('public')->delete($recado->anexo);
             }
@@ -72,11 +71,9 @@ class RecadoController extends Controller
 
             $dados['anexo'] = $arquivo->store('recados', 'public');
             $dados['nome_anexo'] = $arquivo->getClientOriginalName();
-
         }
         // Remover o anexo atual
         elseif ($request->boolean('remover_anexo')) {
-
             if ($recado->anexo) {
                 Storage::disk('public')->delete($recado->anexo);
             }
@@ -90,21 +87,25 @@ class RecadoController extends Controller
         return new RecadoResource($recado);
     }
 
-    // DELETAR recado
+    // EXCLUIR recado
     public function destroy($id)
     {
         $recado = Recado::findOrFail($id);
 
         $this->authorize('delete', $recado);
 
+        if ($recado->anexo) {
+            Storage::disk('public')->delete($recado->anexo);
+        }
+
         $recado->delete();
 
         return response()->json([
-            'message' => 'Recado deletado com sucesso',
-        ], 200);
+            'message' => 'Recado excluído com sucesso!'
+        ]);
     }
 
-    // UPLOAD DO ANEXO
+    // ENVIAR anexo
     public function uploadAnexo(AnexoRequest $request, $id)
     {
         $recado = Recado::findOrFail($id);
@@ -117,18 +118,15 @@ class RecadoController extends Controller
 
         $arquivo = $request->file('anexo');
 
-        $caminhoAnexo = $arquivo->store('recados', 'public');
-        $nomeAnexo = $arquivo->getClientOriginalName();
-
         $recado->update([
-            'anexo'      => $caminhoAnexo,
-            'nome_anexo' => $nomeAnexo,
+            'anexo' => $arquivo->store('recados', 'public'),
+            'nome_anexo' => $arquivo->getClientOriginalName(),
         ]);
 
         return new RecadoResource($recado);
     }
 
-    // DOWNLOAD DO ANEXO
+    // BAIXAR anexo
     public function downloadAnexo($id)
     {
         $recado = Recado::findOrFail($id);
@@ -136,11 +134,12 @@ class RecadoController extends Controller
         $this->authorize('view', $recado);
 
         if (!$recado->anexo) {
-            return response()->json([
-                'message' => 'Este recado não possui anexo.'
-            ], 404);
+            abort(404, 'Este recado não possui anexo.');
         }
 
-        return Storage::disk('public')->response($recado->anexo);
+        return Storage::disk('public')->download(
+            $recado->anexo,
+            $recado->nome_anexo
+        );
     }
 }
