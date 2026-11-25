@@ -1,11 +1,60 @@
+
+/* ==============================
+   CONFIGURAÇÕES GERAIS
+============================== */
+
 * {
   box-sizing: border-box;
 }
 
+:root {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #29243a;
+  background: #f5f6fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  --roxo: #4f46e5;
+  --roxo-hover: #4338ca;
+  --roxo-claro: #eef2ff;
+  --texto: #29243a;
+  --texto-secundario: #77758a;
+  --fundo: #f5f6fb;
+  --branco: #ffffff;
+  --borda: #e7e7ef;
+  --vermelho: #b42318;
+  --sombra: 0 8px 25px rgba(40, 35, 80, 0.07);
+}
+
 body {
   margin: 0;
-  background-color: #f3f4f6;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--fundo);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ==============================
+   ESTRUTURA PRINCIPAL
+============================== */
+
+#root {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  border: none;
+  text-align: left;
 }
 
 .App {
@@ -15,57 +64,919 @@ body {
 }
 
 .App-header {
+  min-height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px;
-  background-color: #4f46e5;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px 7%;
+  background: var(--roxo);
+  color: var(--branco);
+  box-shadow: 0 3px 12px rgba(79, 70, 229, 0.18);
 }
 
 .App-header h1 {
   margin: 0;
-  font-size: 1.5rem;
+  color: var(--branco);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .App-header button {
-  padding: 8px 16px;
-  background-color: rgba(255, 255, 255, 0.15);
+  padding: 9px 22px;
+  color: var(--branco);
+  background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
+  border-radius: 9px;
+  font-weight: 600;
+  transition: 0.2s;
 }
 
 .App-header button:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 main {
+  width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 24px;
+  justify-content: flex-start;
+  padding: 45px 20px;
+}
+
+/* ==============================
+   LOGIN E CADASTRO
+============================== */
+
+.login,
+.cadastro {
+  width: 100%;
+  max-width: 430px;
+  margin: 20px auto;
+  padding: 36px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 18px;
+  box-shadow: var(--sombra);
+}
+
+.login h2,
+.cadastro h2 {
+  margin: 0 0 28px;
+  color: var(--texto);
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.login form,
+.cadastro form,
+.recado-form,
+.editar-recado-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login form > div,
+.cadastro form > div,
+.recado-form > div,
+.editar-recado-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login label,
+.cadastro label,
+.recado-form label,
+.editar-recado-form label {
+  color: #555267;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.login input,
+.cadastro input,
+.recado-form input:not([type="file"]),
+.recado-form textarea,
+.editar-recado-form input,
+.editar-recado-form textarea {
+  width: 100%;
+  padding: 13px 15px;
+  color: var(--texto);
+  background: #fafaff;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.login input:focus,
+.cadastro input:focus,
+.recado-form input:focus,
+.recado-form textarea:focus,
+.editar-recado-form input:focus,
+.editar-recado-form textarea:focus {
+  border-color: var(--roxo);
+  background: var(--branco);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.recado-form textarea,
+.editar-recado-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.recado-form input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  background: #fafaff;
+  border: 1px dashed #c7c5df;
+  border-radius: 10px;
+}
+
+.recado-form small {
+  color: var(--texto-secundario);
+  font-size: 0.8rem;
+}
+
+/* ==============================
+   BOTÕES
+============================== */
+
+.login button[type="submit"],
+.cadastro button[type="submit"],
+.recado-form button[type="submit"],
+.editar-botoes button {
+  padding: 13px 20px;
+  color: var(--branco);
+  background: var(--roxo);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.login button[type="submit"]:hover,
+.cadastro button[type="submit"]:hover,
+.recado-form button[type="submit"]:hover,
+.editar-botoes button:hover {
+  background: var(--roxo-hover);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-editar,
+.btn-excluir {
+  padding: 9px 17px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn-editar {
+  color: var(--roxo);
+  background: var(--roxo-claro);
+  border: 1px solid #d9ddff;
+}
+
+.btn-editar:hover {
+  background: #dfe3ff;
+}
+
+.btn-excluir {
+  color: var(--vermelho);
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+}
+
+.btn-excluir:hover {
+  background: #ffe4e6;
+}
+
+.editar-botoes {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.editar-botoes button[type="button"] {
+  color: #555267;
+  background: #eeeeF4;
+}
+
+.editar-botoes button[type="button"]:hover {
+  background: #e2e2eb;
+}
+
+/* ==============================
+   MENSAGENS DE SUCESSO E ERRO
+============================== */
+
+.mensagem-sucesso {
+  padding: 12px 15px;
+  margin: 15px 0;
+  color: #276749;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.erro {
+  padding: 12px 15px;
+  margin: 15px 0;
+  color: #b42318;
+  background: #fcebea;
+  border: 1px solid #f5c6c2;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 main > p {
+  margin: 12px 0;
+  color: var(--texto-secundario);
   text-align: center;
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.95rem;
 }
 
 main > p button {
+  padding: 0;
+  color: var(--roxo);
   background: none;
   border: none;
-  color: #4f46e5;
+  font-weight: 700;
+}
+
+main > p button:hover {
+  color: var(--roxo-hover);
   text-decoration: underline;
-  cursor: pointer;
-  font-size: 0.9rem;
+}
+
+/* ==============================
+   PÁGINA DE RECADOS
+============================== */
+
+.recados {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+/* Saudação e quantidade de recados */
+
+.recados-resumo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 25px;
+  padding: 15px 20px;
+}
+
+.recados-resumo h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--texto);
+  text-align: left;
+}
+
+.recados-resumo p {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0;
+  color: #555267;
+  text-align: right;
+}
+
+.recados-resumo strong {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--roxo);
+}
+
+/* Lista de recados */
+
+.recados ul {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   padding: 0;
+  margin: 30px 0;
+  list-style: none;
+}
+
+.recado-form {
+  padding: 26px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  box-shadow: var(--sombra);
+}
+
+.recado-item {
+  padding: 24px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 15px;
+  box-shadow: var(--sombra);
+  overflow-wrap: anywhere;
+}
+
+.recado-item h3 {
+  margin: 0 0 12px;
+  color: var(--texto);
+  font-size: 1.2rem;
+}
+
+.recado-item p {
+  margin: 10px 0;
+  color: #555267;
+  line-height: 1.6;
+}
+
+.recado-hora {
+  display: block;
+  margin-top: 14px;
+  color: #9995aa;
+  font-size: 0.8rem;
+}
+
+.recado-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* ==============================
+   ANEXOS
+============================== */
+
+.recado-anexo {
+  margin-top: 15px;
+}
+
+.recado-imagem {
+  display: block;
+  width: 180px;
+  height: 130px;
+  max-width: 100%;
+  object-fit: contain;
+  background: #f8f8fc;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.recado-anexo a {
+  color: var(--roxo);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.recado-anexo a:hover {
+  color: var(--roxo-hover);
+  text-decoration: underline;
+}
+
+/* ==============================
+   RESPONSIVIDADE
+============================== */
+
+@media (max-width: 600px) {
+  .App-header {
+    padding: 14px 20px;
+  }
+
+  .App-header h1 {
+    font-size: 1.4rem;
+  }
+
+  main {
+    padding: 25px 14px;
+  }
+
+  .login,
+  .cadastro {
+    padding: 25px 20px;
+  }
+
+  .recado-form,
+  .recado-item {
+    padding: 19px;
+  }
+
+  .editar-botoes {
+    flex-wrap: wrap;
+  }
+
+  .recados-resumo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 15px 5px;
+  }
+
+  .recados-resumo h2 {
+    font-size: 25px;
+  }
+
+  .recados-resumo p {
+    text-align: left;
+    font-size: 16px;
+  }
+}
+
+/* ==============================
+   PAINEL DE MODERAÇÃO
+============================== */
+
+.admin-recados {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Cabeçalho */
+
+.admin-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 25px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  box-shadow: var(--sombra);
+}
+
+.admin-cabecalho h2 {
+  margin: 0 0 8px;
+  color: var(--texto);
+  font-size: 1.8rem;
+}
+
+.admin-cabecalho p {
+  margin: 0;
+  color: var(--texto-secundario);
+  line-height: 1.5;
+}
+
+/* Contador */
+
+.admin-contador {
+  min-width: 145px;
+  padding: 15px 20px;
+  text-align: center;
+  background: var(--roxo-claro);
+  border: 1px solid #d9ddff;
+  border-radius: 12px;
+}
+
+.admin-contador span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--texto-secundario);
+  font-size: 0.85rem;
+}
+
+.admin-contador strong {
+  color: var(--roxo);
+  font-size: 2rem;
+}
+
+/* Lista */
+
+.admin-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Cartões */
+
+.admin-card {
+  padding: 24px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 15px;
+  box-shadow: var(--sombra);
+  overflow-wrap: anywhere;
+  transition: 0.2s;
+}
+
+.admin-card:hover {
+  border-color: #c7c5f8;
+  transform: translateY(-2px);
+}
+
+.admin-card-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.admin-card-cabecalho h3 {
+  margin: 0;
+  color: var(--texto);
+  font-size: 1.2rem;
+}
+
+.admin-id {
+  padding: 5px 10px;
+  color: var(--roxo);
+  background: var(--roxo-claro);
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Texto do recado */
+
+.admin-texto {
+  margin: 0 0 20px;
+  color: #555267;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* Autor */
+
+.admin-autor {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 15px;
+  border-top: 1px solid var(--borda);
+}
+
+.admin-autor span {
+  color: var(--texto-secundario);
+  font-size: 0.8rem;
+}
+
+.admin-autor strong {
+  color: var(--texto);
+  font-size: 0.95rem;
+}
+
+/* Anexo */
+
+.admin-anexo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 14px;
+  background: #fafaff;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.admin-anexo span {
+  color: #555267;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.admin-botao-download {
+  padding: 9px 16px;
+  color: var(--branco);
+  background: var(--roxo);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.admin-botao-download:hover {
+  background: var(--roxo-hover);
+  transform: translateY(-1px);
+}
+
+/* Mensagens */
+
+.admin-erro {
+  padding: 13px 16px;
+  color: var(--vermelho);
+  background: #fcebea;
+  border: 1px solid #f5c6c2;
+  border-radius: 9px;
+}
+
+.admin-vazio {
+  padding: 40px 20px;
+  text-align: center;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 15px;
+  box-shadow: var(--sombra);
+}
+
+.admin-vazio h3 {
+  margin: 0 0 10px;
+  color: var(--texto);
+}
+
+.admin-vazio p {
+  margin: 0;
+  color: var(--texto-secundario);
+}
+
+/* Responsividade */
+
+@media (max-width: 600px) {
+  .admin-cabecalho {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+
+  .admin-cabecalho h2 {
+    font-size: 1.5rem;
+  }
+
+  .admin-contador {
+    width: 100%;
+  }
+
+  .admin-card {
+    padding: 19px;
+  }
+
+  .admin-card-cabecalho {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-anexo {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-botao-download {
+    width: 100%;
+  }
+}
+
+/* Faixa de identificação do autor */
+
+.admin-autor-faixa {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: -24px -24px 20px;
+  padding: 13px 24px;
+  color: var(--roxo);
+  background: var(--roxo-claro);
+  border-bottom: 1px solid #d9ddff;
+  border-radius: 14px 14px 0 0;
+  font-size: 0.9rem;
+}
+
+.admin-autor-faixa strong {
+  font-weight: 700;
+}
+
+.admin-autor-faixa .admin-id {
+  margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  .admin-autor-faixa {
+    margin: -19px -19px 18px;
+    padding: 13px 19px;
+  }
+}
+/* Botão voltar ao topo */
+
+.botao-voltar-topo {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 48px;
+  height: 48px;
+  color: var(--branco);
+  background: var(--roxo);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(40, 35, 80, 0.2);
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  z-index: 1000;
+}
+
+.botao-voltar-topo:hover {
+  background: var(--roxo-hover);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 600px) {
+  .botao-voltar-topo {
+    right: 18px;
+    bottom: 20px;
+  }
+}
+
+
+/* Datas de criação e modificação dos recados */
+.admin-datas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-bottom: 16px;
+  color: var(--texto-secundario);
+  font-size: 0.85rem;
+}
+
+.admin-datas span {
+  display: inline-block;
+}
+
+.recado-datas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 12px;
+  margin: 14px 0 18px;
+  color: var(--texto-secundario);
+  font-size: 0.76rem;
+}
+
+.recado-hora {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  color: var(--texto-secundario);
+  background: none;
+  border: none;
+  font-size: inherit;
+}
+/* ==============================
+   VISUAL DOS RECADOS
+============================== */
+
+.recados {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.recados ul {
+  gap: 22px;
+}
+
+/* Cartão do recado */
+
+.recado-item {
+  position: relative;
+  padding: 26px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-left: 5px solid var(--roxo);
+  border-radius: 15px;
+  box-shadow: 0 5px 18px rgba(40, 35, 80, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recado-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(40, 35, 80, 0.10);
+}
+
+/* Título */
+
+.recado-item h3 {
+  margin: 0 0 14px;
+  color: var(--texto);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Texto */
+
+.recado-item h3 + p {
+  margin: 0;
+  color: #555267;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* Datas */
+
+.recado-datas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 12px;
+  margin: 14px 0 18px;
+  color: var(--texto-secundario);
+  font-size: 0.76rem;
+}
+
+.recado-hora {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  color: var(--texto-secundario);
+  background: none;
+  border: none;
+  font-size: inherit;
+}
+
+/* Nome do anexo */
+
+.recado-datas + p {
+  margin: 0 0 12px;
+  color: var(--texto-secundario);
+  font-size: 0.88rem;
+}
+
+/* Área dos anexos */
+
+.recado-anexo {
+  margin-top: 12px;
+  padding: 15px;
+  background: #fafaff;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+}
+
+.recado-anexo img {
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(40, 35, 80, 0.08);
+}
+
+.recado-anexo a {
+  color: var(--roxo);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.recado-anexo a:hover {
+  color: var(--roxo-hover);
+  text-decoration: underline;
+}
+
+/* Botões de ação */
+
+.recado-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borda);
+}
+
+.recado-acoes button {
+  min-width: 100px;
+}
+
+/* Telas pequenas */
+
+@media (max-width: 600px) {
+  .recado-item {
+    padding: 19px;
+  }
+
+  .recado-item h3 {
+    font-size: 1.15rem;
+  }
+
+  .recado-datas {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .recado-acoes {
+    justify-content: stretch;
+  }
+
+  .recado-acoes button {
+    flex: 1;
+  }
 }

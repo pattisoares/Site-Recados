@@ -14,6 +14,7 @@ class Recado extends Model
         'titulo',
         'texto',
         'anexo',
+        'nome_anexo',
     ];
 
     public function user()

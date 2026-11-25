@@ -1,0 +1,34 @@
+
+vendor/
+.env
+.git/
+node_modules/
+```
+
+Salve e feche.
+
+### 2. Reconstruir o backend sem usar o cache
+
+Execute:
+
+```bash
+docker compose build --no-cache backend
+```
+
+Esse comando vai reconstruir a imagem e instalar novamente as dependências do Composer.
+
+### 3. Iniciar o backend
+
+Quando a construção terminar:
+
+```bash
+docker compose up -d backend
+```
+
+E confira:
+
+```bash
+docker compose ps
+```
+
+Não vamos apagar nenhum volume. O banco de dados e os anexos permanecem preservados. Envie o resultado da construção para continuarmos.

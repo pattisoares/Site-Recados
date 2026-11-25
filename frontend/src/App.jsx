@@ -1,24 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import Cadastro from './pages/cadastro.jsx'
+
+import { useState, useEffect } from 'react';
+import Cadastro from './pages/cadastro.jsx';
 import Login from './pages/login.jsx';
 import Recados from './pages/recados.jsx';
-import './App.css'
+import './App.css';
+import api from './services/api.jsx';
+import AdminRecados from './pages/AdminRecados.jsx';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [usuario, setUsuario] = useState(null);
+  const [carregando, setCarregando] = useState(true);
   const [tela, setTela] = useState('login');
+  const [mostrarTopo, setMostrarTopo] = useState(false);
 
-  function handleAutenticado(novoToken) {
-    setToken(novoToken);
+  // Verifica se já existe uma sessão ativa
+  useEffect(() => {
+    async function verificarSessao() {
+      try {
+        const { data } = await api.get('/user');
+        setUsuario(data);
+      } catch (erro) {
+        setUsuario(null);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    verificarSessao();
+  }, []);
+
+  // Controla a exibição da seta
+  useEffect(() => {
+    function verificarRolagem() {
+      setMostrarTopo(window.scrollY > 200);
+    }
+
+    window.addEventListener('scroll', verificarRolagem);
+
+    return () => {
+      window.removeEventListener('scroll', verificarRolagem);
+    };
+  }, []);
+
+  function voltarAoTopo() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
-  function handleLogout() {
-    localStorage.removeItem('token');
-    setToken(null);
-    setTela('login');
+  function handleAutenticado(novoUsuario) {
+    setUsuario(novoUsuario);
+  }
+
+  async function handleLogout() {
+    try {
+      await api.post('/logout');
+      setUsuario(null);
+      setTela('login');
+    } catch (erro) {
+      alert('Não foi possível sair. Tente novamente.');
+    }
   }
 
   function handleCadastroSucesso() {
@@ -26,36 +68,64 @@ function App() {
     setTela('login');
   }
 
+  if (carregando) {
+    return <p>Verificando sessão...</p>;
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Recados</h1>
-        {token && <button onClick={handleLogout}>Sair</button>}
+
+        {usuario && (
+          <button onClick={handleLogout}>Sair</button>
+        )}
       </header>
 
       <main>
-        {token ? (
-          <Recados />
+        {usuario ? (
+          usuario.role === 'admin' ? (
+            <AdminRecados />
+          ) : (
+            <Recados usuario={usuario} />
+          )
         ) : tela === 'login' ? (
           <>
             <Login onLogin={handleAutenticado} />
+
             <p>
               Não tem conta?{' '}
-              <button onClick={() => setTela('cadastro')}>Cadastre-se</button>
+              <button onClick={() => setTela('cadastro')}>
+                Cadastre-se
+              </button>
             </p>
           </>
         ) : (
           <>
             <Cadastro onCadastroSucesso={handleCadastroSucesso} />
+
             <p>
               Já tem conta?{' '}
-              <button onClick={() => setTela('login')}>Fazer login</button>
+              <button onClick={() => setTela('login')}>
+                Fazer login
+              </button>
             </p>
           </>
         )}
       </main>
+
+      {mostrarTopo && (
+        <button
+          className="botao-voltar-topo"
+          onClick={voltarAoTopo}
+          title="Voltar ao topo"
+          aria-label="Voltar ao topo"
+        >
+          ↑
+        </button>
+      )}
     </div>
   );
 }
 
-export default App
+export default App;

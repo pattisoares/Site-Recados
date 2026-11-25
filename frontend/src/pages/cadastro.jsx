@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import api from '../services/api';
 import './cadastro.css';
@@ -30,20 +31,29 @@ function Cadastro({ onCadastroSucesso }) {
     }
 
     setEnviando(true);
+
     try {
+      // Solicita o cookie CSRF ao Laravel
+      await api.get('/sanctum/csrf-cookie', {
+        baseURL: 'http://localhost:8000',
+      });
+
       await api.post('/register', {
         name,
         email,
         password,
         password_confirmation: passwordConfirmation,
       });
-      // Cadastro feito com sucesso, mas o backend não retorna token
-      // então avisamos o usuário para fazer login em seguida
+
       onCadastroSucesso();
+
     } catch (err) {
       if (err.response?.status === 422) {
         const erros = err.response.data.errors;
-        const primeiraMsg = erros ? Object.values(erros)[0][0] : 'Verifique os dados informados.';
+        const primeiraMsg = erros
+          ? Object.values(erros)[0][0]
+          : 'Verifique os dados informados.';
+
         setErro(primeiraMsg);
       } else {
         setErro('Erro ao cadastrar. Tente novamente.');
@@ -55,7 +65,8 @@ function Cadastro({ onCadastroSucesso }) {
 
   return (
     <div className="cadastro">
-      <h2>Criar conta</h2>
+      <h2>Cadastro</h2>
+
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Nome</label>
@@ -64,7 +75,6 @@ function Cadastro({ onCadastroSucesso }) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Seu nome"
           />
         </div>
 
@@ -75,7 +85,6 @@ function Cadastro({ onCadastroSucesso }) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="seu@email.com"
           />
         </div>
 
@@ -86,18 +95,16 @@ function Cadastro({ onCadastroSucesso }) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Mínimo 8 caracteres"
           />
         </div>
 
         <div>
-          <label htmlFor="password_confirmation">Confirme a senha</label>
+          <label htmlFor="passwordConfirmation">Confirme a senha</label>
           <input
-            id="password_confirmation"
+            id="passwordConfirmation"
             type="password"
             value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
-            placeholder="Repita a senha"
           />
         </div>
 

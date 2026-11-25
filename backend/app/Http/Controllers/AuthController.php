@@ -9,26 +9,22 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // =========================
-    // REGISTER
-    // =========================
+    // CADASTRO
     public function register(Request $request)
     {
         $request->validate(
             [
-                'name' => 'required',
+                'name' => 'required|string',
                 'email' => 'required|email|unique:users',
-                'password' => 'required|min:6|confirmed',
+                'password' => 'required|min:8|confirmed',
             ],
             [
                 'name.required' => 'Informe seu nome.',
-
                 'email.required' => 'Informe um e-mail.',
                 'email.email' => 'Informe um e-mail válido.',
                 'email.unique' => 'Este e-mail já está cadastrado.',
-
                 'password.required' => 'Informe uma senha.',
-                'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
+                'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
                 'password.confirmed' => 'As senhas não coincidem.',
             ]
         );
@@ -39,56 +35,46 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
+            'message' => 'Cadastro realizado com sucesso.',
             'user' => $user,
-            'token' => $token,
         ], 201);
     }
 
-    // =========================
     // LOGIN
-    // =========================
     public function login(Request $request)
     {
-        $request->validate(
-            [
-                'email' => 'required|email',
-                'password' => 'required',
-            ],
-            [
-                'email.required' => 'Informe um e-mail.',
-                'email.email' => 'Informe um e-mail válido.',
-                'password.required' => 'Informe uma senha.',
-            ]
-        );
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        if (! Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::guard('web')->attempt(
+            $request->only('email', 'password')
+        )) {
             return response()->json([
                 'message' => 'E-mail ou senha incorretos.',
             ], 401);
         }
 
-        $user = Auth::user();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $request->session()->regenerate();
 
         return response()->json([
-            'user' => $user,
-            'token' => $token,
+            'message' => 'Login realizado com sucesso.',
+            'user' => Auth::guard('web')->user(),
         ]);
     }
 
-    // =========================
     // LOGOUT
-    // =========================
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
-            'message' => 'Logout realizado.',
+            'message' => 'Logout realizado com sucesso.',
         ]);
     }
 }

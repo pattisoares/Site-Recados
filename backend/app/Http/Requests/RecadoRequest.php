@@ -16,15 +16,15 @@ class RecadoRequest extends FormRequest
         if ($this->isMethod('post')) {
             return [
                 'titulo' => 'required|string|max:100',
-                'texto'  => 'required|string',
-                'anexo'  => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+                'texto'  => 'required|string|max:2000',
+                'anexo'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             ];
         }
 
         return [
             'titulo' => 'sometimes|string|max:100',
-            'texto'  => 'sometimes|string',
-            'anexo'  => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'texto'  => 'sometimes|string|max:2000',
+            'anexo'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
     }
 }

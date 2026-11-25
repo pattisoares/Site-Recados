@@ -1,15 +1,14 @@
+
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api', // ajuste depois para a porta certa do seu backend
-});
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  baseURL: 'http://localhost:8000/api',
+  withCredentials: true,
+  withXSRFToken: true,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Accept': 'application/json',
+  },
 });
 
 export default api;
